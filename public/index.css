@@ -1,0 +1,143 @@
+#controlPanel {
+    background-image: url("background.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 70vh;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2%;
+    user-select: none; /* CSS3 */
+    -moz-user-select: none; /* Firefox */
+    -webkit-user-select: none; /* Safari、Chromeなど */
+    -ms-user-select: none; /* IE10かららしい */
+}
+
+#leftPanels {
+    height: 95%;
+    width: 40%;
+    float: left;
+    margin-left: 2%;
+}
+
+#enterPanel {
+    height: 55%;
+    width: 100%;
+    background-image: url("backgroundPink.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-top: 4%;
+}
+
+#cancelPanel {
+    height: 41%;
+    width: 100%;
+    background-image: url("backgroundGreen.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+#rightPanel {
+    float: left;
+    height: 70%;
+    width: 49%;
+    background-image: url("backgroundYellow.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-left: 2%;
+    margin-top: 5%;
+}
+
+.buttonTitle {
+    margin-left: 16px;
+    color: white;
+    font-size: 1.3em;
+    float: left;
+    width: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+    line-height: 2em;
+} 
+
+#enterButton {
+    float: left;
+    background-image: url("buttonPinkLight.png");
+    width: 40%;
+    margin-right: 0;
+    height: 80%;
+    margin-top: 10%;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position-y: center;
+}
+
+#enterButton:active {
+    background-image: url("buttonPinkDark.png");
+}
+
+#cancelButton {
+    float: left;
+    background-image: url("buttonGreenLight.png");
+    width: 40%;
+    margin-right: 0;
+    height: 100%;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position-y: center;
+}
+
+#cancelButton:active {
+    background-image: url("buttonGreenDark.png");
+}
+
+#leftButton {
+    float: left;
+    font-size: 1.3em;
+    text-align: center;
+    margin-top: 5%;
+    width: 35%;
+    margin-left: 10%;
+    height: 100%;
+    background-image: url("buttonLeftLight.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: center;
+}
+
+#leftButton:active {
+    background-image: url("buttonLeftDark.png");
+}
+
+#rightButton {
+    float: left;
+    font-size: 1.3em;
+    text-align: center;
+    margin-top: 5%;
+    width: 35%;
+    margin-left: 10%;
+    height: 100%;
+    background-image: url("buttonRightLight.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: center;
+}
+
+#rightButton:active {
+    background-image: url("buttonRightDark.png");
+}
+
+#video {
+    transform: scale(-1, 1);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    display: block;
+}
+
+#canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0);
+}
