@@ -1,7 +1,8 @@
 let state = 0;
 var selected = 0;
 let canvas = document.getElementById('canvas');
-
+let imageCapture;
+var event = 'ontouchstart' in window ? 'touchstart' : 'click';
 
 $(function () {
   canvas.width = $("#canvas").width();
@@ -19,9 +20,9 @@ function initiate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   var initBg = new Image();
   initBg.src = "startBg.jpg";
-  initBg.onload = function(){
+  initBg.onload = function () {
     let imgWidth = canvas.height / initBg.height * initBg.width;
-    ctx.drawImage(initBg,(canvas.width - imgWidth)/2,0,imgWidth,canvas.height);
+    ctx.drawImage(initBg, (canvas.width - imgWidth) / 2, 0, imgWidth, canvas.height);
   }
 }
 
@@ -31,12 +32,12 @@ function selectView(e) {
   $("#video").hide();
   $("#canvas").show();
 
-  if(e){
+  if (e) {
     selected = 0;
-    setTimeout(function(){
+    setTimeout(function () {
       $("#frameSound").get(0).load();
       $("#frameSound").get(0).play();
-    },2000);
+    }, 2000);
   }
 
   let ctx = canvas.getContext("2d");
@@ -45,8 +46,8 @@ function selectView(e) {
 
   var initBg = new Image();
   initBg.src = "bgImage.jpg";
-  initBg.onload = function(){
-    ctx.drawImage(initBg,0,0,canvas.width,canvas.width / initBg.width * initBg.height);
+  initBg.onload = function () {
+    ctx.drawImage(initBg, 0, 0, canvas.width, canvas.width / initBg.width * initBg.height);
 
     ctx.font = "38px serif";
     ctx.lineWidth = 10;
@@ -57,17 +58,17 @@ function selectView(e) {
     ctx.strokeRect(70 + selected * ((canvas.width - 140) / 3), 120, (canvas.width - 140) / 3 - 20, canvas.height - 160);
 
     ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-    for(let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       ctx.fillRect(70 + i * ((canvas.width - 140) / 3), 120, (canvas.width - 140) / 3 - 20, canvas.height - 160);
       let frame = new Image();
-      frame.src = "frame" + (i+1) + ".gif";
-      frame.onload = function() {
+      frame.src = "frame" + (i + 1) + ".gif";
+      frame.onload = function () {
         let width = (canvas.width - 140) / 3 - 20;
         let height = width / frame.width * frame.height;
-        ctx.drawImage(frame,70 + i * ((canvas.width - 140) / 3), 120 + (canvas.height - 160 - height) / 2, width, height);
+        ctx.drawImage(frame, 70 + i * ((canvas.width - 140) / 3), 120 + (canvas.height - 160 - height) / 2, width, height);
       }
     }
-    
+
   }
 }
 
@@ -84,7 +85,7 @@ function cameraView() {
   ctx.strokeStyle = "#ff0081";
   ctx.lineWidth = 5;
   ctx.beginPath();
-  ctx.ellipse(canvas.width / 2,  canvas.height / 2, 150, 200, 0 , 0, 2 * Math.PI);
+  ctx.ellipse(canvas.width / 2, canvas.height / 2, 150, 200, 0, 0, 2 * Math.PI);
   ctx.stroke();
   console.log(selected);
 }
@@ -97,27 +98,27 @@ function countDown() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.fillStyle = "rgba(255,255,255,0.5)";
-  ctx.fillRect(0,0,canvas.width,canvas.height); 
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.strokeStyle = "#ff0081";
   ctx.lineWidth = 5;
-  ctx.beginPath();canvas.width / 2,  canvas.height / 2
-  ctx.ellipse(canvas.width / 2,  canvas.height / 2, 150, 200, 0 , 0, 2 * Math.PI);
+  ctx.beginPath(); canvas.width / 2, canvas.height / 2
+  ctx.ellipse(canvas.width / 2, canvas.height / 2, 150, 200, 0, 0, 2 * Math.PI);
   ctx.stroke();
 
   ctx.beginPath();
   ctx.strokeStyle = "white";
   ctx.lineWidth = 50;
-  ctx.arc(canvas.width / 2,  canvas.height / 2,canvas.height / 4,0,countDownCircleTheta)
+  ctx.arc(canvas.width / 2, canvas.height / 2, canvas.height / 4, 0, countDownCircleTheta)
   ctx.stroke();
 
   ctx.fillStyle = "white";
   ctx.font = "italic bold 150px sans-serif";
   ctx.lineWidth = 10;
-  ctx.fillText(countDownvalue, canvas.width / 2 - 20,  canvas.height / 2 + 50);
+  ctx.fillText(countDownvalue, canvas.width / 2 - 20, canvas.height / 2 + 50);
 
-  countDownCircleTheta += 3.1415*2*0.05;
-  if(countDownCircleTheta > 3.1415*2) {
+  countDownCircleTheta += 3.1415 * 2 * 0.05;
+  if (countDownCircleTheta > 3.1415 * 2) {
     if (countDownvalue == 1) {
       console.log(selected);
       printView();
@@ -125,10 +126,10 @@ function countDown() {
     else {
       countDownvalue -= 1;
       countDownCircleTheta = 0;
-      setTimeout(countDown,50);
+      setTimeout(countDown, 50);
     }
   } else {
-    setTimeout(countDown,50);
+    setTimeout(countDown, 50);
   }
 }
 
@@ -142,14 +143,53 @@ function printView() {
   let ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "white";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   $("#video").hide();
-  $("#canvas").show(); 
+  $("#canvas").show();
 
-  setTimeout(function(){
+  setTimeout(function () {
     console.log(selected);
-    let f = new Image();
+
+    imageCapture.takePhoto()
+      .then(blob => {
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.addEventListener("readystatechange", function () {
+          if (this.readyState === 4, this.status == "200") {
+            let url = window.URL.createObjectURL(this.response);
+            printJS({
+              printable: url,
+              type: 'image',
+              style: {
+                margin: 0,
+                size: "1000mm 1480mm"
+              },
+              scanStyles: false,
+              onPrintDialogClose: printingView(),
+            });
+          }
+        });
+
+        xhr.open("POST", "https://pricla.herokuapp.com");
+        xhr.setRequestHeader("frame", "1");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("cache-control", "no-cache");
+        xhr.withCredentials = false;
+        xhr.responseType = "blob";
+        xhr.send(blob);
+
+        return createImageBitmap(blob)
+      }).then(imageBitmap => {
+        let video = document.getElementById("video");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let marginSide = (canvas.width - video.videoWidth) / 2;
+        ctx.drawImage(imageBitmap, marginSide, (canvas.height - video.videoHeight) / 2, video.videoWidth, video.videoHeight);
+
+      })
+
+    /*let f = new Image();
     f.src = "frame" + (selected + 1) + ".gif";
     f.onload = function() {
       let video = document.getElementById("video");
@@ -167,40 +207,40 @@ function printView() {
         onPrintDialogClose: () => printingView(),
         style: "img {width: "+2.4 + 2.4 * marginSideRatio * 2+"cm; height: 1.5cm; margin-left: " + 0.7 - 2.4 * marginSideRatio + "cm; margin-bottom: 0.8cm;}"
         });
-    }
+    }*/
   }, 150);
 }
 
 function printingView() {
   state = 4;
   let ctx = canvas.getContext("2d");
-  
+
   $("#loadingBg").get(0).load();
-    $("#loadingBg").get(0).play();
+  $("#loadingBg").get(0).play();
 
-    setTimeout(function(){
-      let ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let bg = new Image();
-      bg.src = "loadingBg.jpg";
-      bg.onload = function() {
-        let imgWidth = canvas.height / bg.height * bg.width;
-        ctx.drawImage(bg,(canvas.width - imgWidth)/2,0,imgWidth,canvas.height);
-      }
+  setTimeout(function () {
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let bg = new Image();
+    bg.src = "loadingBg.jpg";
+    bg.onload = function () {
+      let imgWidth = canvas.height / bg.height * bg.width;
+      ctx.drawImage(bg, (canvas.width - imgWidth) / 2, 0, imgWidth, canvas.height);
+    }
 
 
 
-      setTimeout(function(){initiate()},3000);
-    },1000);
+    setTimeout(function () { initiate() }, 3000);
+  }, 1000);
 
 }
 
-$(".btn").on("touchstart ", function () {
+$(".btn").on(event, function () {
   $("#buttonSound").get(0).load();
   $("#buttonSound").get(0).play();
 });
 
-$("#enterButton").on("touchstart ", function () {
+$("#enterButton").on(event, function () {
   switch (state) {
     case 0:
       $("#openingSound").get(0).load();
@@ -222,7 +262,7 @@ $("#enterButton").on("touchstart ", function () {
 
 });
 
-$("#cancelButton").on("touchstart ", function () {
+$("#cancelButton").on(event, function () {
   switch (state) {
     case 1:
       initiate();
@@ -233,7 +273,7 @@ $("#cancelButton").on("touchstart ", function () {
   }
 });
 
-$("#rightButton").on("touchstart ", function () {
+$("#rightButton").on(event, function () {
   switch (state) {
     case 1:
       if (selected < 2) selected += 1;
@@ -244,7 +284,7 @@ $("#rightButton").on("touchstart ", function () {
   }
 });
 
-$("#leftButton").on("touchstart ", function () {
+$("#leftButton").on(event, function () {
   switch (state) {
     case 1:
       if (selected > 0) selected -= 1;
@@ -264,5 +304,7 @@ function showCamera() {
   //リアルタイムに再生（ストリーミング）させるためにビデオタグに流し込む
   media.then((stream) => {
     video.srcObject = stream;
+    let videoTrack = stream.getVideoTracks()[0]
+    imageCapture = new ImageCapture(videoTrack)
   });
 }
