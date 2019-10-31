@@ -178,7 +178,7 @@ function printView() {
         });
 
         xhr.open("POST", "https://pricla.herokuapp.com");
-        xhr.setRequestHeader("frame", selected);
+        xhr.setRequestHeader("frame", selected+1);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.setRequestHeader("cache-control", "no-cache");
         xhr.withCredentials = false;
