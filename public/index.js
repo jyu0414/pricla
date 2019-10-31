@@ -159,15 +159,20 @@ function printView() {
         xhr.addEventListener("readystatechange", function () {
           if (this.readyState === 4, this.status == "200") {
             let url = window.URL.createObjectURL(this.response);
-            printJS({
+            /*printJS({
               printable: url,
               type: 'image',
-              style: {
-                margin: 0,
-                size: "1000mm 1480mm"
-              },
               scanStyles: false,
               onPrintDialogClose: printingView(),
+              imageStyle: 'width:100mm;height:148mm,margin:0;padding:0;'
+            });*/
+            
+            printJS({
+              printable: "<html><body><img src='"+url+"'/></body></html>",
+              type: 'raw-html',
+              style: 'html,body,img {margin: 0;} html,body{height:146mm; overflow: hidden;} img{width:100mm; height: 148mm;}',
+              scanStyles: false,
+              onPrintDialogClose: printingView()
             });
           }
         });
