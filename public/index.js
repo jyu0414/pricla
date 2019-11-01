@@ -15,6 +15,8 @@ function initiate() {
   $("#canvas").show();
   $("#openingSound").get(0).load();
   $("#openingSound").get(0).play();
+  $("#theme").get(0).load();
+  $("#theme").get(0).play();
   state = 0;
   let ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -193,26 +195,6 @@ function printView() {
         ctx.drawImage(imageBitmap, marginSide, (canvas.height - video.videoHeight) / 2, video.videoWidth, video.videoHeight);
 
       })
-
-    /*let f = new Image();
-    f.src = "frame" + (selected + 1) + ".gif";
-    f.onload = function() {
-      let video = document.getElementById("video");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "yellow";
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-      let marginSide = (canvas.width - video.videoWidth)/2;
-      let marginSideRatio = marginSide / canvas.width;
-      ctx.drawImage(document.getElementById("video"),marginSide,(canvas.height - video.videoHeight)/2,video.videoWidth,video.videoHeight);
-      ctx.drawImage(f,marginSide,(canvas.height - video.videoHeight)/2,video.videoWidth,video.videoHeight);
-      printJS({
-        printable: [canvas.toDataURL(),canvas.toDataURL(),canvas.toDataURL(),canvas.toDataURL(),canvas.toDataURL(),canvas.toDataURL()],
-        type:'image',
-        showModal:false,
-        onPrintDialogClose: () => printingView(),
-        style: "img {width: "+2.4 + 2.4 * marginSideRatio * 2+"cm; height: 1.5cm; margin-left: " + 0.7 - 2.4 * marginSideRatio + "cm; margin-bottom: 0.8cm;}"
-        });
-    }*/
   }, 150);
 }
 
